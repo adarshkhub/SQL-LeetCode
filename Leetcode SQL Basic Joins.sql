@@ -14,14 +14,36 @@ where transaction_id IS NULL
 GROUP BY Customer_ID
 --Rising Temperature
 -- Self Join table 1 and table 2, and then compare row values and return the one with highertemperature
---pseudocode
-SELECT 
-w2.id
-FROM 
-    Weather w1
-JOIN 
-    Weather w2
-ON 
-    DATEDIFF(day,w1.recordDate, w2.recordDate) = 1
-WHERE 
-    w2.temperature > w1.temperature;
+
+SELECT
+w1.id
+FROM
+Weather w1
+JOIN
+Weather w2 ON w2.recordDate = w1.recordDate - interval '1 day'
+WHERE
+w1.temperature > w2.temperature;
+
+
+-- Employee Bonus
+-- Write your PostgreSQL query statement below
+select name, bonus
+from Employee
+Left Join Bonus on Bonus.empId = Employee.empId
+where bonus < 1000 or bonus IS NULL
+
+
+-- Students and Examinations
+-- Write your PostgreSQL query statement below
+
+-- 1 step is to join
+
+-- 1 step is to groupby and count the subject names per student_id
+
+select student_id, count(subject_name) as attended_exams
+
+
+
+
+group by student_id
+order by student_id Desc, subject_name
