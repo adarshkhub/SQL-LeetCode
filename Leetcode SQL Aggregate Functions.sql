@@ -3,7 +3,15 @@ select * from Cinema
 where id%2 != 0 and description != 'boring'
 order by rating desc;
 
---Q2
+--1251 Average Selling Price
+SELECT 
+    p.product_id, 
+    COALESCE(ROUND(SUM(p.price * u.units) * 1.0 / SUM(u.units) * 1.0, 2), 0) as average_price
+FROM Prices p LEFT JOIN UnitsSold u 
+ON 
+    p.product_id = u.product_id
+    AND u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY p.product_id   
 
 
 --Q3
