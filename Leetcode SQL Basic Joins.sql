@@ -121,3 +121,67 @@ Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
 Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 
 --Solution
+
+
+-- Manager Reports
+Table: Employee
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
+| department  | varchar |
+| managerId   | int     |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table indicates the name of an employee, their department, and the id of their manager.
+If managerId is null, then the employee does not have a manager.
+No employee will be the manager of themself.
+
+ 
+
+Write a solution to find managers with at least five direct reports.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Employee table:
++-----+-------+------------+-----------+
+| id  | name  | department | managerId |
++-----+-------+------------+-----------+
+| 101 | John  | A          | null      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
++-----+-------+------------+-----------+
+Output: 
++------+
+| name |
++------+
+| John |
++------+
+
+
+
+-- Solution
+
+
+WITH group_manager AS (
+SELECT managerid, COUNT(*) as n_reports
+FROM employee
+WHERE managerid IS NOT NULL
+GROUP BY managerid
+)
+SELECT name
+FROM employee a
+INNER JOIN (SELECT managerid FROM group_manager WHERE n_reports >= 5) b
+ON a.id = b.managerid
